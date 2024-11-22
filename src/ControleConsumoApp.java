@@ -23,9 +23,12 @@ public class ControleConsumoApp {
     private JComboBox<String> tipoGraficoComboBox;
     private JPanel panelGraficos;
 
-    public ControleConsumoApp() {
+    private int usuarioId;
+
+    public ControleConsumoApp(int usuarioId) {
+        this.usuarioId = usuarioId; // Inicializa o atributo usuarioId
         controleConsumo = new ControleConsumo();
-        controleConsumo.carregarDados();
+        controleConsumo.carregarDados(usuarioId); // Passa o ID do usuário ao carregar dados
         criarInterface();
         carregarMeta();
         verificarMetaDefinida();
@@ -124,7 +127,7 @@ public class ControleConsumoApp {
                     throw new NumberFormatException("O valor de consumo deve ser positivo.");
                 }
                 String descricao = campoDescricao.getText();
-                controleConsumo.registrarConsumo(new Date(), valor, descricao);
+                controleConsumo.registrarConsumo(new Date(), valor, descricao, usuarioId);
                 JOptionPane.showMessageDialog(null, "Consumo registrado com sucesso!");
 
                 atualizarGrafico();
@@ -400,7 +403,7 @@ public class ControleConsumoApp {
     }
 
     private void atualizarHistorico() {
-        controleConsumo.carregarDados(); // Recarrega os dados do banco para garantir que estão atualizados
+        controleConsumo.carregarDados(usuarioId); // Recarrega os dados do banco para garantir que estão atualizados
         StringBuilder historico = new StringBuilder("Histórico de Consumo:\n");
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 

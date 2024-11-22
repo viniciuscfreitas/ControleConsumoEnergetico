@@ -4,19 +4,32 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabaseConnection {
-    private static final String URL = "jdbc:mysql://localhost:3306/controle_consumo";
-    private static final String USER = "root"; // Substitua pelo seu usuário do MySQL
-    private static final String PASSWORD = "vini1234"; // Substitua pela sua senha do MySQL
+    // URL para conexão com o banco de dados
+    private static final String URL = "jdbc:mysql://localhost:3306/controle_consumo_energetico";
+    // Credenciais do banco de dados
+    private static final String USER = "controle_usuario"; // Usuário criado no script SQL
+    private static final String PASSWORD = "senha123"; // Senha definida no script SQL
 
+    // Variável de conexão (singleton)
     private static Connection connection;
 
+    /**
+     * Obtém a conexão com o banco de dados.
+     *
+     * @return Objeto Connection
+     * @throws SQLException Se ocorrer um erro durante a conexão
+     */
     public static Connection getConnection() throws SQLException {
+        // Cria uma nova conexão se ela não existir ou estiver fechada
         if (connection == null || connection.isClosed()) {
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
         }
         return connection;
     }
 
+    /**
+     * Inicializa o banco de dados, verificando e criando tabelas se necessário.
+     */
     public static void initializeDatabase() {
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement()) {
